@@ -15,15 +15,26 @@ int main (int argc, char *argv[]){
 
 
     while(!feof(fp)){
-        
+        //jardelcarvalho
         unsigned addr;
         char rw;
         fscanf(fp,"%x %c", &addr,&rw);
         printf("%x %c\n",addr,rw);
 
-        switch(&argv[1]):
+        switch(&argv[1]){
             
             case "lru":
+            //Algoritmo lru
+            break;
+
+            case "fifo":
+            //Alg fifo
+            break;
+
+            case "random":
+            //Alg random
+            break;
+        }
 
 
     }
