@@ -39,7 +39,6 @@ int main (int argc, char *argv[]){
     Criar a tabela de páginas de acordo com o tamanho especificado.
     */    
     tabela *tabela;
-
     criaTabela(tabela,tamanho_pagina);
 
     
@@ -50,11 +49,8 @@ int main (int argc, char *argv[]){
     char tmpOP;
 
     int indice;
-
-
     int pageFaut = 0;
     
-
     while(fscanf(arquivo,"%x %c\n",&tmpPOS,&tmpOP) != EOF){
         indice = tmpPOS%tabela->num_entradas;
         //achei a pagina, agora vou acessar o conteudo dela
