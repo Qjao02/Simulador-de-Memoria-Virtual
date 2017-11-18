@@ -12,3 +12,11 @@ void criaTabela(tabela *tabela,int tamanho_pagina){
     	tabela->paginas[i].moldura = 0;
     }
 }
+
+void criaMoldura(moldura *moldura,int tamanho_moldura){
+	moldura->num_entradas = tamanho_moldura;
+	moldura->blocos = (bloco_moldura*) malloc(sizeof(bloco_moldura)*tamanho_moldura);
+	for(int i=0;i<tamanho_moldura;i++){
+		moldura->blocos[i].pagina = NULL;		
+	}
+}

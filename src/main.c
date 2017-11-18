@@ -55,6 +55,9 @@ int main (int argc, char *argv[]){
     tabela *tabela;
     criaTabela(tabela,tamanho_pagina);
 
+    moldura *moldura;
+    criaMoldura(moldura,tamanho_memoria);
+
 
     /*
     leitura dos acessos.
@@ -71,17 +74,14 @@ int main (int argc, char *argv[]){
         if(tabela->paginas[indice].presente){
             //pagina esta na memoria principal e seu endereço é a moldura com o deslocamento
 
+            //modificar a moldura para falar que ela foi acessada
+            tabela->paginas[indice].moldura
+
         }else{
             //pagina nao esta na memoria principal
             pageFault++;
-            /*inventar uma pagina e substituir usando o algoritmo de substituicao*/
-            //pagina criada
-            //pagina *p = malloc(sizeof(pagina));
-            //p->moldura = p->presente = 1;
-
-            printf("%s\n",algoritmo_substituicao );
-            if(algoritmo_substituicao == "fifo" || algoritmo_substituicao == "FIFO"){
-                printf("FIFO\n");
+            if(strcmp("fifo", algoritmo) || strcmp("FIFO", algoritmo)){
+                    
             }
 
         }

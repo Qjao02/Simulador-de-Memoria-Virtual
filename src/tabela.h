@@ -17,9 +17,16 @@ typedef struct tabela{
 	pagina *paginas;
 } tabela;
 
+typedef struct bloco_moldura{
+	pagina *pagina;
+	clock_t ultimo_acesso;
+	int pagina_alterada;
+} bloco_moldura;
 
-
-
+typedef struct moldura{
+	unsigned int num_entradas;
+	bloco_moldura *blocos;
+} moldura;
 
 #ifdef __cplusplus
 }
