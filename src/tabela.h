@@ -5,11 +5,10 @@
 extern "C" {
 #endif
 
-
-
 typedef struct pagina{
-	int presente;
-	int moldura;
+	char presente;
+	unsigned int moldura; //endereco físico
+	long int endereco_virtual_base;
 } pagina;
 
 typedef struct tabela{
@@ -17,16 +16,17 @@ typedef struct tabela{
 	pagina *paginas;
 } tabela;
 
-typedef struct bloco_moldura{
-	pagina *pagina;
-	clock_t ultimo_acesso;
-	int pagina_alterada;
-} bloco_moldura;
-
 typedef struct moldura{
-	unsigned int num_entradas;
-	bloco_moldura *blocos;
+	pagina *pagina;
+	unsigned int ultimo_acesso; //Os clocks podem ser considerados como a colocação da intrução lida
+	unsigned int _carregamento; //O instante de carregamento para a memória
+	char pagina_modificada;
 } moldura;
+
+typedef struct memoria_processo{
+	unsigned int num_entradas;
+	moldura *molduras;
+} memoria_processo;
 
 #ifdef __cplusplus
 }
