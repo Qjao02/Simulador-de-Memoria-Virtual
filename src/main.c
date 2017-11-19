@@ -88,7 +88,7 @@ int main (int argc, char *argv[]){
     /*
     leitura dos acessos.
     */
-    int tmpPOS;
+    unsigned int tmpPOS;
     char tmpOP;
     int tamanho_pagina_real = tamanho_pagina * pow(2, 10); //tamanho da página em bytes
 
@@ -110,7 +110,8 @@ int main (int argc, char *argv[]){
         //incrementa o número de instruções lidas (semelhante aos pulsos de clock)
         indice = tmpPOS % tabela.num_entradas;
         //achei a pagina, agora vou acessar o conteudo dela
-        if(tabela.paginas[indice].endereco_virtual_base <= tmpPOS && tmpPOS <= tabela.paginas[indice].endereco_virtual_base + tamanho_pagina_real && tmpOP == 'R'){
+        //if(tabela.paginas[indice].endereco_virtual_base <= tmpPOS && tmpPOS <= tabela.paginas[indice].endereco_virtual_base + tamanho_pagina_real && tmpOP == 'R'){
+        if(tabela.paginas[indice].presente && tmpOP == 'R'){
             //pagina esta na memoria principal e seu endereço é a moldura (com o deslocamento ?? talvez)
             //redefinindo último acesso
             memoria_processo.molduras[tabela.paginas[indice].moldura].ultimo_acesso = pulso_clock;
