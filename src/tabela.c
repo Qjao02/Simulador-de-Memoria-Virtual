@@ -10,7 +10,6 @@ void criaTabela(tabela *tabela, int tamanho_pagina){
     for(int i = 0; i < tabela->num_entradas; i++){
     	tabela->paginas[i].presente = 0;
 		tabela->paginas[i].moldura = 0;
-		tabela->paginas[i].endereco_virtual_base = -1;
     }
 }
 

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "tabela.c"
 #include "algoritmos.c"
 
@@ -99,28 +98,20 @@ int main (int argc, char *argv[]){
 
     printf("Executando simulador ...\n");
 
-    long int menor = 525525525, maior = -1; //USEI ISSO E ENCONTREI ENDEREÇOS NEGATIVOS (linhas 106, 107, 108)
-    int menorzero = 0;
-
     while(fscanf(arquivo,"%x %c\n", &tmpPOS, &tmpOP) != EOF){
-        if(tmpPOS < menor) menor = tmpPOS;
-        if(tmpPOS > maior) maior = tmpPOS;
-        if(tmpPOS < 0) menorzero = 1;
         pulso_clock++;
         //incrementa o número de instruções lidas (semelhante aos pulsos de clock)
         indice = tmpPOS % tabela.num_entradas;
         //achei a pagina, agora vou acessar o conteudo dela
-        //if(tabela.paginas[indice].endereco_virtual_base <= tmpPOS && tmpPOS <= tabela.paginas[indice].endereco_virtual_base + tamanho_pagina_real && tmpOP == 'R'){
-        if(tabela.paginas[indice].presente && tmpOP == 'R'){
-            //pagina esta na memoria principal e seu endereço é a moldura (com o deslocamento ?? talvez)
+        paginas_lidas += tmpOP == 'R' ? 1 : 0;
+        paginas_escritas += tmpOP == 'W' ? 1 : 0;
+        if(tabela.paginas[indice].presente){
+            //pagina esta na memoria principal e seu endereço é a moldura
             //redefinindo último acesso
             memoria_processo.molduras[tabela.paginas[indice].moldura].ultimo_acesso = pulso_clock;
-            paginas_lidas++;
         }else{
             //pagina nao esta na memoria principal
-            if(tmpOP == 'R'){
-                pageFault++;
-            }
+            pageFault++;
             unsigned int indice_moldura;
             if(!strcmp("fifo", algoritmo_substituicao) || !strcmp("FIFO", algoritmo_substituicao)){
                 //fifo, me dê a posição da moldura que eu possa fazer a substituição
@@ -136,14 +127,12 @@ int main (int argc, char *argv[]){
             //alocando nova página
             p->presente = 1;
             p->moldura = indice_moldura;
-            //atribuindo o endereco virtual base da página
-            p->endereco_virtual_base = tmpPOS < tamanho_pagina_real ? 0 : tmpPOS - tmpPOS % tamanho_pagina_real;
             tabela.paginas[indice] = *p;
             //inserindo página na moldura
             memoria_processo.molduras[indice_moldura].pagina = p;
             memoria_processo.molduras[indice_moldura]._carregamento = pulso_clock;
             memoria_processo.molduras[indice_moldura].ultimo_acesso = pulso_clock;
-            paginas_escritas++;
+
         }
     }
 
@@ -155,6 +144,5 @@ int main (int argc, char *argv[]){
     printf("Paginas escritas: %d\n", paginas_escritas);
     printf("Faltas de pagina: %d\n\n", pageFault);
 
-    printf("Maior = %ld, Menor = %ld, MenorZero = %d", maior, menor, menorzero);
     return 0;
 }

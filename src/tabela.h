@@ -7,8 +7,7 @@ extern "C" {
 
 typedef struct pagina{
 	char presente;
-	unsigned int moldura; //endereco físico
-	long int endereco_virtual_base;
+	unsigned int moldura;
 } pagina;
 
 typedef struct tabela{
