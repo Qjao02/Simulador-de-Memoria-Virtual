@@ -4,7 +4,6 @@
 #include "tabela.c"
 #include "algoritmos.c"
 
-void debug(){ printf("Debug\n"); } 
 
 int main (int argc, char *argv[]){
 	
@@ -109,6 +108,8 @@ int main (int argc, char *argv[]){
             //pagina esta na memoria principal e seu endereço é a moldura
             //redefinindo último acesso
             memoria_processo.molduras[tabela.paginas[indice].moldura].ultimo_acesso = pulso_clock;
+            //página modificada
+            memoria_processo.molduras[tabela.paginas[indice].moldura].pagina_modificada = tmpOP == 'W' ? 1 : 0; 
         }else{
             //pagina nao esta na memoria principal
             pageFault++;
@@ -123,13 +124,15 @@ int main (int argc, char *argv[]){
                  //random, me dê a posição da moldura que eu possa fazer a substituição
                 indice_moldura = random_escolha(memoria_processo.num_entradas);
             }
-            pagina *p = malloc(sizeof(pagina));
-            //alocando nova página
-            p->presente = 1;
-            p->moldura = indice_moldura;
-            tabela.paginas[indice] = *p;
-            //inserindo página na moldura
-            memoria_processo.molduras[indice_moldura].pagina = p;
+            //a página que ocupava esta moldura não está mais presente
+            if(memoria_processo.molduras[indice_moldura].pagina){
+                memoria_processo.molduras[indice_moldura].pagina->presente = 0;
+                memoria_processo.molduras[indice_moldura].pagina_modificada = 0;
+            }
+            //a página referenciada pelo endereço agora esta presente
+            tabela.paginas[indice].presente = 1;
+            //a moldura recebe a página e atualiza seus temporizadores
+            memoria_processo.molduras[indice_moldura].pagina = &tabela.paginas[indice];
             memoria_processo.molduras[indice_moldura]._carregamento = pulso_clock;
             memoria_processo.molduras[indice_moldura].ultimo_acesso = pulso_clock;
 
